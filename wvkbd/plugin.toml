@@ -1,0 +1,111 @@
+# wvkbd - an on-screen keyboard for Noctalia, driven by the wvkbd binary.
+#
+# wvkbd maps its own layout, colours and layers from the build it was compiled
+# with (config.<layout>.h, layout.<layout>.h), so the plugin asks for nothing
+# beyond the flags the binary already understands and never re-implements a key.
+#
+#   service.luau  headless [[service]]; owns the keyboard process and publishes
+#                 its state (stopped / shown / hidden / unavailable) on the
+#                 "status" channel.
+#   widget.luau   bar pill: a keyboard glyph, click to toggle.
+#
+# The service owns the process so the keyboard survives every widget reload,
+# keeps running while hidden (wvkbd hides on SIGUSR1, shows on SIGUSR2), and can
+# be toggled from a keybinding with no bar widget placed at all.
+#
+# Settings are plugin-level ([[setting]] at the root), so the service and the
+# pill read one set through noctalia.getConfig().
+
+id = "nuarthy/wvkbd"
+name = "wvkbd"
+version = "1.0.0"
+plugin_api = 34
+author = "nuarthy"
+license = "MIT"
+icon = "keyboard"
+description = "On-screen keyboard for touch screens, toggled from the bar and driven by wvkbd."
+tags = ["bar", "system", "utility"]
+dependencies = ["wvkbd"]
+
+# ── Keyboard ─────────────────────────────────────────────────────────────────
+
+# An absolute or ~ path, a command name on PATH, or empty to auto-detect. The
+# auto-detect order favours a custom build, because that build carries the
+# user's own layout: wvkbd-custom, wvkbd-mobintl, wvkbd-deskintl.
+[[setting]]
+key = "binary"
+type = "string"
+label_key = "settings.binary.label"
+description_key = "settings.binary.description"
+default = ""
+
+# 0 leaves the height to the binary, which uses 30% of the output.
+[[setting]]
+key = "height"
+type = "int"
+label_key = "settings.height.label"
+description_key = "settings.height.description"
+default = 0
+min = 0
+max = 900
+
+# Comma-separated layouts to cycle through, e.g. "full,special". Empty keeps the
+# layers compiled into the binary.
+[[setting]]
+key = "layers"
+type = "string"
+label_key = "settings.layers.label"
+description_key = "settings.layers.description"
+default = ""
+
+[[setting]]
+key = "font"
+type = "string"
+label_key = "settings.font.label"
+description_key = "settings.font.description"
+default = ""
+
+# -1 keeps the corner radius compiled into the binary.
+[[setting]]
+key = "rounding"
+type = "int"
+label_key = "settings.rounding.label"
+description_key = "settings.rounding.description"
+default = -1
+min = -1
+max = 48
+
+[[setting]]
+key = "colors"
+type = "select"
+label_key = "settings.colors.label"
+description_key = "settings.colors.description"
+default = "shell"
+options = [
+  { value = "shell", label_key = "settings.colors.options.shell" },
+  { value = "binary", label_key = "settings.colors.options.binary" },
+]
+
+# "stop" reproduces a plain toggle script: the second click ends the process, the
+# next one starts a fresh keyboard. "keep" leaves wvkbd running hidden and shows
+# it again with SIGUSR2, which is faster but holds its virtual keyboard device.
+[[setting]]
+key = "lifetime"
+type = "select"
+label_key = "settings.lifetime.label"
+description_key = "settings.lifetime.description"
+default = "stop"
+options = [
+  { value = "stop", label_key = "settings.lifetime.options.stop" },
+  { value = "keep", label_key = "settings.lifetime.options.keep" },
+]
+
+# ── Entries ──────────────────────────────────────────────────────────────────
+
+[[service]]
+id = "service"
+entry = "service.luau"
+
+[[widget]]
+id = "keyboard"
+entry = "widget.luau"

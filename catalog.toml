@@ -1,0 +1,11 @@
+[[plugin]]
+id           = "nuarthy/wvkbd"
+name         = "wvkbd"
+version      = "1.0.0"
+author       = "nuarthy"
+license      = "MIT"
+icon         = "keyboard"
+description  = "On-screen keyboard for touch screens, toggled from the bar and driven by wvkbd."
+plugin_api   = 34
+tags         = ["bar", "system", "utility"]
+dependencies = ["wvkbd"]

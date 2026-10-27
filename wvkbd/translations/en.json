@@ -1,0 +1,51 @@
+{
+  "service": {
+    "not-found": "No wvkbd binary found. Install wvkbd or set one in the plugin settings.",
+    "start-failed": "wvkbd ({name}) exited while starting.",
+    "status": "Keyboard state: {state}"
+  },
+  "settings": {
+    "binary": {
+      "description": "Path or command name. Empty looks for a custom build first, then wvkbd-mobintl and wvkbd-deskintl, on PATH and in ~/applications/wvkbd.",
+      "label": "wvkbd binary"
+    },
+    "colors": {
+      "description": "Take the background, keys and text from the Noctalia palette, or keep the colours compiled into the binary.",
+      "label": "Colours",
+      "options": {
+        "binary": "From the binary",
+        "shell": "Follow the shell palette"
+      }
+    },
+    "font": {
+      "description": "Pango font for the key labels, such as \"Sans 14\". Empty keeps the compiled-in font.",
+      "label": "Font"
+    },
+    "height": {
+      "description": "Height of the docked keyboard in pixels. 0 uses 30% of the output height.",
+      "label": "Height"
+    },
+    "layers": {
+      "description": "Comma-separated layouts to cycle through, such as \"full,special\". Empty keeps the compiled-in layers.",
+      "label": "Layers"
+    },
+    "lifetime": {
+      "description": "Stop the keyboard when it is hidden, or keep the process and show it again instantly.",
+      "label": "When hidden",
+      "options": {
+        "keep": "Keep it loaded",
+        "stop": "Stop the process"
+      }
+    },
+    "rounding": {
+      "description": "Corner radius of the keys in pixels. -1 keeps the compiled-in radius.",
+      "label": "Key rounding"
+    }
+  },
+  "title": "Keyboard",
+  "widget": {
+    "hidden": "The on-screen keyboard is hidden.",
+    "shown": "The on-screen keyboard is up.",
+    "unavailable": "wvkbd is not available."
+  }
+}
